@@ -1,6 +1,6 @@
 export const defaultTheme = {
     'white': '#FFF',
-    'background': '',
+    'background': '#0d0d0d',
 
     'base-title': '',
     'base-subtitle': '',
@@ -11,4 +11,6 @@ export const defaultTheme = {
     'base-button': '',
     'base-input': '',
     'base-card': '',
+
+    'red': '#ce4853'
 }

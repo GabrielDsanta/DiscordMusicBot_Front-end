@@ -6,4 +6,10 @@ export const GlobalStyles = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
     }
+
+    body{
+        background-color: ${props => props.theme['background']};
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+    }
 `

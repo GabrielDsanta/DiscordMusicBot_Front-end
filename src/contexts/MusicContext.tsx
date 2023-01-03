@@ -9,11 +9,11 @@ export interface MusicCardData {
     duration: number
     icon?: 'Plus' | 'Delete'
 }
-const localData = localStorage.getItem('Music') !== null ? JSON.parse(localStorage.getItem('Music')!) : [];
+const localStorageMusicInMyPlaylist = localStorage.getItem('Music') !== null ? JSON.parse(localStorage.getItem('Music')!) : [];
 export interface PlaylistData {
     artists: string[]
     name: string
-    songs: InstanceType<typeof localData>
+    songs: InstanceType<typeof localStorageMusicInMyPlaylist>
 }
 export interface MusicData {
     musicInMyPlaylist: MusicCardData[]
@@ -28,14 +28,13 @@ interface MusicContextProviderProps {
     children: ReactNode
 }
 
-console.log(localData)
 export const MusicContext = createContext({} as MusicData)
 
 export function CoffeContextProvider({ children }: MusicContextProviderProps) {
 
-    const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>(localData)
+    const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>(localStorageMusicInMyPlaylist)
     const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<PlaylistData | null>(null)
-    const [playlistFiltered, setplaylistFiltered] = useState<PlaylistData | null>(null)
+    const [playlistFiltered, setPlaylistFiltered] = useState<PlaylistData | null>(null)
 
     useEffect(() => {
         window.localStorage.setItem('Music', JSON.stringify(musicInMyPlaylist))
@@ -50,7 +49,7 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps) {
     }
 
     function CallFilteredSongsOnPlaylist(data: PlaylistData) {
-        setplaylistFiltered(data)
+        setPlaylistFiltered(data)
     }
 
     useEffect(() => {

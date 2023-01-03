@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ContainerMusicCard = styled.div`
-    background-color: #202020;
+    background:${(props) => props.theme['gray-800']} ;
     width: 22rem;
     height: 3.5rem;
     border-radius: 6px;
@@ -9,7 +9,7 @@ export const ContainerMusicCard = styled.div`
     align-items: center;
     justify-content: space-around;
     gap: 7rem;
-    color: #FFF;
+    color: ${(props) => props.theme['gray-100']};
     text-align: left;
 
     img{
@@ -39,12 +39,27 @@ export const ContainerMusicDetails = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-
+`
+export const BaseButton = styled.div`
     button{
-        background-color: transparent;
+        background: transparent;
         border: none;
         outline: none;
-        color: ${props => props.theme["red"]};
+        color: ${(props) => props.theme["gray-100"]};
         cursor: pointer;
+    }
+`
+export const ContainerButtonTrash = styled(BaseButton)`
+    button{
+        &:hover{
+            color: ${(props) => props.theme["red-500"]};
+        }
+    }
+`
+export const ContainerButtonPLus = styled(BaseButton)`
+ button{
+        &:hover{
+            color: ${(props) => props.theme["green-500"]};
+        }
     }
 `

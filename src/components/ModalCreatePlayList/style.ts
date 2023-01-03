@@ -4,6 +4,7 @@ export const ContainerModal = styled.main`
   width: 30rem;
   height: 20rem;
   margin-top: -10rem;
+  position: absolute;
   border-radius: 8px;
   background: #191919;
 
@@ -43,6 +44,8 @@ export const ContainerForm = styled.div`
 
     color: white;
     background: #191919;
+
+    outline: none;
   }
 `
 export const ContainerMusic = styled.div`

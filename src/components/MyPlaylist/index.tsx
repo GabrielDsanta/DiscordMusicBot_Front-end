@@ -1,9 +1,8 @@
 import { useContext } from "react";
-import { PlusCircle } from "phosphor-react";
 import { MusicContext } from "../../contexts/MusicContext";
 import { MusicCard } from "../MusicCard";
 import { ContainerPlaylistCard } from "../PlaylistCard/styles";
-import { ContainerContent, CreatePlaylistButton } from "./styles";
+import { ContainerContent } from "./styles";
 
 
 
@@ -14,11 +13,6 @@ export function MyPlaylist() {
 
     return (
         <ContainerContent>
-            <CreatePlaylistButton>
-                <PlusCircle  weight="fill" size={28} />
-                Create Playlist
-            </CreatePlaylistButton>
-
             <ContainerPlaylistCard>
                 <h1>My Playlist</h1>
                 {musicInMyPlaylist.map((item) => {
@@ -34,6 +28,7 @@ export function MyPlaylist() {
                     )
                 })}
             </ContainerPlaylistCard>
+
         </ContainerContent>
     )
 }

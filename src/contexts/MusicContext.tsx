@@ -1,5 +1,5 @@
-import { createContext, ReactNode, useState } from "react"
-
+import { createContext, ReactNode, useEffect, useState } from "react"
+import axios from 'axios'
 
 export interface MusicCardData {
     id?: string
@@ -9,11 +9,14 @@ export interface MusicCardData {
     minutesDurationMusic?: string
     secondsDurationMusic?: string
     icon?: 'Plus' | 'Delete'
+    name?: string
 }
 
 export interface MusicData{
     musicInMyPlaylist: MusicCardData[]
+    musicsOnPlaylist: MusicCardData[]
     CallSetMusic: (data: MusicCardData) => void
+    
     RemoveMusicOnMyPlaylist: (data: MusicCardData[]) => void
 }
 
@@ -25,6 +28,7 @@ export const MusicContext = createContext({} as MusicData)
 
 export function CoffeContextProvider({ children }: MusicContextProviderProps){
     const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>([])
+    const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<MusicCardData[]>([])
 
     function CallSetMusic(data: MusicCardData){
         setMusicInMyPlaylist((state) => [...state, data])
@@ -33,13 +37,21 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps){
     function RemoveMusicOnMyPlaylist(data: MusicCardData[]){
         setMusicInMyPlaylist(data)
     }
+
+    useEffect(() => {
+        axios.get('http://ec2-54-167-129-32.compute-1.amazonaws.com:3000/playlists/37i9dQZF1DZ06evO0aGty0')
+            .then(response => {
+                setMusicsOnPlaylist(response.data)
+            })
+    }, [])
     
     return(
        <MusicContext.Provider 
             value={{ 
                 musicInMyPlaylist,
                 CallSetMusic,
-                RemoveMusicOnMyPlaylist
+                RemoveMusicOnMyPlaylist,
+                musicsOnPlaylist,
             }}
         >
             {children}

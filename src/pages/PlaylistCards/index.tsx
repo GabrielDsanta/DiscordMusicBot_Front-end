@@ -7,6 +7,7 @@ import { PlusCircle } from "phosphor-react";
 
 export function PlaylistCards() {
     const [openModal, setOpenModal] = useState(false)
+   
     return (
         <ContainerPlaylistsCards>
             <ContainerCreatePlaylist>
@@ -15,10 +16,12 @@ export function PlaylistCards() {
                     Create Playlist
                 </CreatePlaylistButton>
             </ContainerCreatePlaylist>
+
             <ContainerCards>
                 <PlaylistCard />
                 <MyPlaylist />
             </ContainerCards>
+            
             <ModalCreatePlaylist onOpen={openModal} onClose={() => setOpenModal(false)} />
         </ContainerPlaylistsCards>
     )

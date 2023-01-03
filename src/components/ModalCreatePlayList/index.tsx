@@ -75,7 +75,7 @@ export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
               <span>{playlistName}</span>
             </ContainerPlaylistTitle>
             <ContainerDetails>
-              <img src={musicInMyPlaylist[0].imageSrc} alt="Foto" />
+              <img src={musicInMyPlaylist[0].pictureUrl} alt="Foto" />
               <span>Musicas:{musicInMyPlaylist.length}</span>
             </ContainerDetails>
           </ContainerPlaylistCard>

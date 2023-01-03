@@ -1,46 +1,91 @@
 import { X } from "phosphor-react";
-import { ContainerModal, ContainerForm, ContainerButtonCloseModal, ContainerMusic, ContainerButtonSubmit } from './style';
-import { MusicCard } from '../MusicCard'
+import { MusicCard } from "../MusicCard";
+import { ContainerButtonCloseModal, ContainerButtonSubmit, ContainerForm, ContainerPlaylistCard, ContainerPlaylistTitle, ContainerDetails } from './style';
+
+import * as zod from 'zod'
+import Modal from 'react-modal'
+
+import { useForm } from 'react-hook-form'
+import { useContext, useState } from "react";
 import { MusicContext } from "../../contexts/MusicContext";
-import { useContext } from "react";
+import { zodResolver } from '@hookform/resolvers/zod';
+
 interface ModalProps {
   onOpen: boolean
   onClose: () => void
 }
+const customStyles = {
+  content: {
+    width: '480px',
+    height: '380px',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%',
+    borderRadius: '8px',
+    background: '#191919',
+  }
+}
+const newPlaylistNameFormValidationSchema = zod.object({
+  PlaylistName: zod.string().min(1, 'Informe o nome da Playlist')
+})
+type NewPlaylistFormData = zod.infer<typeof newPlaylistNameFormValidationSchema>
+
 export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
-  if (!onOpen) return null
+  const { register, handleSubmit, watch, reset } = useForm<NewPlaylistFormData>({
+    resolver: zodResolver(newPlaylistNameFormValidationSchema),
+    defaultValues: {
+      PlaylistName: ''
+    },
+  })
   const { musicInMyPlaylist } = useContext(MusicContext)
+  const playlistName = watch('PlaylistName')
+  const isSubmitDisabled = !playlistName
+
+  function handleCreateNewPlaylist(data: NewPlaylistFormData) {
+    console.log(data)
+    reset()
+  }
+
+  if (!onOpen) return null
   return (
-    <ContainerModal >
+    <Modal
+      isOpen={onOpen}
+      onRequestClose={onClose}
+      style={customStyles}
+    >
       <ContainerButtonCloseModal>
         <button onClick={onClose}>
           <X size={22} />
         </button>
       </ContainerButtonCloseModal>
+
       <ContainerForm>
-        <form action="">
+        <form onSubmit={handleSubmit(handleCreateNewPlaylist)}>
           <label htmlFor="PlaylistName">Playlist Name</label>
-          <input id="PlaylistName" type="text" />
+          <input
+            id="playlistName"
+            {...register('PlaylistName')} />
+
+
+          <ContainerPlaylistCard>
+            <ContainerPlaylistTitle>
+              <span>{playlistName}</span>
+            </ContainerPlaylistTitle>
+            <ContainerDetails>
+              <img src={musicInMyPlaylist[0].imageSrc} alt="Foto" />
+              <span>Musicas:{musicInMyPlaylist.length}</span>
+            </ContainerDetails>
+          </ContainerPlaylistCard>
+
+          <ContainerButtonSubmit>
+            <button type="submit" disabled={isSubmitDisabled} onClick={onClose}>Create</button>
+          </ContainerButtonSubmit>
         </form>
-        <ContainerMusic>
-          {musicInMyPlaylist.map((item) => {
-            return (
-              <MusicCard
-                id={item.id}
-                imageSrc={item.imageSrc}
-                artist={item.artist}
-                minutesDurationMusic={item.minutesDurationMusic}
-                secondsDurationMusic={item.secondsDurationMusic}
-                musicName={item.musicName}
-                icon="Delete"
-              />
-            )
-          })}
-        </ContainerMusic>
-        <ContainerButtonSubmit>
-          <button type="submit">Create</button>
-        </ContainerButtonSubmit>
       </ContainerForm>
-    </ContainerModal>
+
+    </Modal>
   )
 }

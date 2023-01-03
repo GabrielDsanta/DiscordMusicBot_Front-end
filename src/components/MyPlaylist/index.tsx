@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MusicContext } from "../../contexts/MusicContext";
 import { MusicCard } from "../MusicCard";
 import { ContainerPlaylistCard } from "../PlaylistCard/styles";
@@ -6,7 +6,6 @@ import { ContainerContent } from "./styles";
 
 export function MyPlaylist() {
     const { musicInMyPlaylist } = useContext(MusicContext)
-
     return (
         <ContainerContent>
             <ContainerPlaylistCard>

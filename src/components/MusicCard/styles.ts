@@ -9,7 +9,7 @@ export const ContainerMusicCard = styled.div`
     align-items: center;
     justify-content: space-around;
     gap: 7rem;
-    color: #FFF;
+    color: ${(props) => props.theme['gray-100']};
     text-align: left;
     margin-bottom: 1rem;
     padding: .3rem;
@@ -48,12 +48,26 @@ export const ContainerMusicDetails = styled.div`
     align-items: center;
     justify-content: center;
     flex: 1;
-
+    
     button{
-        background-color: transparent;
+        background: transparent;
         border: none;
         outline: none;
-        color: ${props => props.theme["red"]};
+        color: ${(props) => props.theme["gray-100"]};
         cursor: pointer;
+    }
+`
+export const ContainerButtonTrash = styled(BaseButton)`
+    button{
+        &:hover{
+            color: ${(props) => props.theme["red-500"]};
+        }
+    }
+`
+export const ContainerButtonPLus = styled(BaseButton)`
+ button{
+        &:hover{
+            color: ${(props) => props.theme["green-500"]};
+        }
     }
 `

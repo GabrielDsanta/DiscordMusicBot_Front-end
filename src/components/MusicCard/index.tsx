@@ -1,11 +1,10 @@
 import { Plus, Trash } from "phosphor-react";
 import { MouseEvent, useContext } from "react";
 import { MusicCardData, MusicContext } from "../../contexts/MusicContext";
-import { ContainerMusicCard, ContainerMusicDetails } from "./styles";
+import { ContainerMusicCard, ContainerMusicDetails, ContainerButtonTrash, ContainerButtonPLus } from "./styles";
 
 export function MusicCard({ pictureUrl, artists, name, duration ,icon = 'Plus' }: MusicCardData) {
     const { CallSetMusic, RemoveMusicOnMyPlaylist, musicInMyPlaylist } = useContext(MusicContext)
-
     if(artists?.length! > 15){
         let arrayString = artists?.split(' ')
         arrayString = arrayString?.slice(0, 2)
@@ -29,7 +28,7 @@ export function MusicCard({ pictureUrl, artists, name, duration ,icon = 'Plus' }
         CallSetMusic(newMusicOnMyPlaylist)
     }
 
-    function CallRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>){
+    function CallRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
         RemoveMusicOnMyPlaylist(musicInMyPlaylist.filter((musicToBeDelete) => {
             return name !== musicToBeDelete.name
         }))
@@ -55,13 +54,19 @@ export function MusicCard({ pictureUrl, artists, name, duration ,icon = 'Plus' }
             <ContainerMusicDetails>
                 <h4>3:20</h4>
                 {icon === 'Delete' ? (
-                    <button onClick={CallRemoveMusicOnMyPlaylist}>
-                        <Trash size={30} color="#ce4853" />
-                    </button>
-                ):
-                    <button onClick={AddMusicOnMyPlaylist}>
-                        <Plus size={30} color="white" weight="duotone" />
-                    </button>
+                    <ContainerButtonTrash>
+                        <button onClick={CallRemoveMusicOnMyPlaylist}>
+                            <Trash size={30} />
+                        </button>
+                    </ContainerButtonTrash>
+
+                ) :
+                    <ContainerButtonPLus>
+                        <button onClick={AddMusicOnMyPlaylist}>
+                            <Plus size={30} weight="duotone" />
+                        </button>
+                    </ContainerButtonPLus>
+
                 }
             </ContainerMusicDetails>
         </ContainerMusicCard>

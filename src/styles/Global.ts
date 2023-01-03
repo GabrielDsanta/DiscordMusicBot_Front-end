@@ -6,9 +6,9 @@ export const GlobalStyles = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
     }
-
     body{
-        background-color: ${props => props.theme['background']};
+        background-color: ${props => props.theme['gray-900']};
+        color: ${props => props.theme['gray-100']};
         font-family: 'Roboto', sans-serif;
         font-weight: 400;
     }

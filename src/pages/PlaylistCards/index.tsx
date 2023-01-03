@@ -1,6 +1,9 @@
-import { ContainerPlaylistsCards, ContainerCards, ContainerCreatePlaylist, CreatePlaylistButton } from "./styles";
-import { PlaylistCard } from '../../components/PlaylistCard/index'
+import { useContext, useState } from "react";
+import { MusicContext } from "../../contexts/MusicContext";
+
+import { PlusCircle } from "phosphor-react";
 import { MyPlaylist } from "../../components/MyPlaylist";
+import { PlaylistCard } from '../../components/PlaylistCard/index'
 import { ModalCreatePlaylist } from '../../components/ModalCreatePlayList'
 import { ChangeEvent, useContext, useState } from "react";
 import { PlusCircle } from "phosphor-react";

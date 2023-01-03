@@ -19,7 +19,9 @@ export const ContainerCreatePlaylist = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 41rem;
+    justify-content: space-between;
+    width: 52rem;
+    margin-right: 2rem;
 `
 export const CreatePlaylistButton = styled.button`
     background-color: #191919;
@@ -32,7 +34,6 @@ export const CreatePlaylistButton = styled.button`
     color: #FFF;
     font-family: 'Roboto', sans-serif;
     font-size: .9rem;
-    margin-right: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-evenly;

@@ -3,21 +3,26 @@ import axios from 'axios'
 
 export interface MusicCardData {
     id?: string
-    imageSrc?: string
-    artist?: string
-    musicName?: string
-    minutesDurationMusic?: string
-    secondsDurationMusic?: string
+    pictureUrl: string
+    artists: string
+    name: string
+    duration: number
     icon?: 'Plus' | 'Delete'
-    name?: string
+}
+
+export interface PlaylistData {
+    artists: string[]
+    name: string
+    songs: MusicCardData[]
 }
 
 export interface MusicData{
     musicInMyPlaylist: MusicCardData[]
-    musicsOnPlaylist: MusicCardData[]
+    musicsOnPlaylist: PlaylistData | null
+    playlistFiltered: PlaylistData | null
     CallSetMusic: (data: MusicCardData) => void
-    
     RemoveMusicOnMyPlaylist: (data: MusicCardData[]) => void
+    CallFilteredSongsOnPlaylist: (data: PlaylistData) => void
 }
 
 interface MusicContextProviderProps{
@@ -28,7 +33,9 @@ export const MusicContext = createContext({} as MusicData)
 
 export function CoffeContextProvider({ children }: MusicContextProviderProps){
     const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>([])
-    const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<MusicCardData[]>([])
+
+    const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<PlaylistData | null>(null)
+    const [playlistFiltered, setplaylistFiltered] = useState<PlaylistData | null>(null)
 
     function CallSetMusic(data: MusicCardData){
         setMusicInMyPlaylist((state) => [...state, data])
@@ -36,6 +43,10 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps){
 
     function RemoveMusicOnMyPlaylist(data: MusicCardData[]){
         setMusicInMyPlaylist(data)
+    }
+
+    function CallFilteredSongsOnPlaylist(data: PlaylistData){
+        setplaylistFiltered(data)
     }
 
     useEffect(() => {
@@ -52,6 +63,8 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps){
                 CallSetMusic,
                 RemoveMusicOnMyPlaylist,
                 musicsOnPlaylist,
+                CallFilteredSongsOnPlaylist,
+                playlistFiltered
             }}
         >
             {children}

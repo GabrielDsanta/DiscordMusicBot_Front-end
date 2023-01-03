@@ -3,16 +3,27 @@ import { MouseEvent, useContext } from "react";
 import { MusicCardData, MusicContext } from "../../contexts/MusicContext";
 import { ContainerMusicCard, ContainerMusicDetails } from "./styles";
 
-export function MusicCard({ imageSrc, artist, musicName, minutesDurationMusic, secondsDurationMusic, icon = 'Plus' }: MusicCardData) {
+export function MusicCard({ pictureUrl, artists, name, duration ,icon = 'Plus' }: MusicCardData) {
     const { CallSetMusic, RemoveMusicOnMyPlaylist, musicInMyPlaylist } = useContext(MusicContext)
+
+    if(artists?.length! > 15){
+        let arrayString = artists?.split(' ')
+        arrayString = arrayString?.slice(0, 2)
+        artists = arrayString?.join(' ')
+    }
+
+    if(name?.length! > 15){
+        let arrayString = name?.split(' ')
+        arrayString = arrayString?.slice(0, 4)
+        name = arrayString?.join(' ')
+    }
 
     function AddMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>){
         const newMusicOnMyPlaylist: MusicCardData = {
-            imageSrc: imageSrc,
-            artist: artist,
-            musicName: musicName,
-            minutesDurationMusic: '3',
-            secondsDurationMusic: '20'
+            pictureUrl: pictureUrl,
+            artists: artists,
+            name: name,
+            duration: duration,
         }
 
         CallSetMusic(newMusicOnMyPlaylist)
@@ -20,7 +31,7 @@ export function MusicCard({ imageSrc, artist, musicName, minutesDurationMusic, s
 
     function CallRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>){
         RemoveMusicOnMyPlaylist(musicInMyPlaylist.filter((musicToBeDelete) => {
-            return musicName !== musicToBeDelete.musicName
+            return name !== musicToBeDelete.name
         }))
     }
 
@@ -30,18 +41,19 @@ export function MusicCard({ imageSrc, artist, musicName, minutesDurationMusic, s
             <ContainerMusicDetails>
                 <img
                     height={40}
-                    width={42}
-                    src={imageSrc}
+                    width={40}
+                    src={pictureUrl}
                     alt="Foto Do Artista"
                 />
+                
                 <div>
-                    <h2>{artist}</h2>
-                    <h3>{musicName}</h3>
+                    <h2>{artists}</h2>
+                    <h3>{name}</h3>
                 </div>
             </ContainerMusicDetails>
 
             <ContainerMusicDetails>
-                <h4>{minutesDurationMusic}:{secondsDurationMusic}</h4>
+                <h4>3:20</h4>
                 {icon === 'Delete' ? (
                     <button onClick={CallRemoveMusicOnMyPlaylist}>
                         <Trash size={30} color="#ce4853" />

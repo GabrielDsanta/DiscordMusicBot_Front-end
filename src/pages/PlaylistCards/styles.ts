@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const ContainerPlaylistsCards = styled.div`
-    background-color: ${props => props.theme['background']};
+    background-color: ${props => props.theme['gray-900']};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,7 +22,7 @@ export const ContainerCreatePlaylist = styled.div`
     margin-left: 41rem;
 `
 export const CreatePlaylistButton = styled.button`
-    background-color: #191919;
+    background:${(props) => props.theme['gray-800']} ;
     width: 9rem;
     border: none;
     outline: none;
@@ -37,4 +37,12 @@ export const CreatePlaylistButton = styled.button`
     align-items: center;
     justify-content: space-evenly;
     cursor: pointer;
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    &:not(:disabled):hover {
+        color: ${(props) => props.theme['green-300']};
+    }
 `

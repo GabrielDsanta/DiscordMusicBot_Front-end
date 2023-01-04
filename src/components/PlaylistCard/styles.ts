@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ContainerPlaylistCard = styled.div`
-    background-color: #191919;
+    background: ${(props) => props.theme['gray-800']};
     width: 25rem;
     height: 45rem;
     border-radius: 6px;

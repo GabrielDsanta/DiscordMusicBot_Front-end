@@ -9,14 +9,13 @@ export interface MusicCardData {
     duration: number
     icon?: 'Plus' | 'Delete'
 }
-
+const localStorageMusicInMyPlaylist = localStorage.getItem('Music') !== null ? JSON.parse(localStorage.getItem('Music')!) : [];
 export interface PlaylistData {
     artists: string[]
     name: string
-    songs: MusicCardData[]
+    songs: InstanceType<typeof localStorageMusicInMyPlaylist>
 }
-
-export interface MusicData{
+export interface MusicData {
     musicInMyPlaylist: MusicCardData[]
     musicsOnPlaylist: PlaylistData | null
     playlistFiltered: PlaylistData | null
@@ -25,28 +24,32 @@ export interface MusicData{
     CallFilteredSongsOnPlaylist: (data: PlaylistData) => void
 }
 
-interface MusicContextProviderProps{
+interface MusicContextProviderProps {
     children: ReactNode
 }
 
 export const MusicContext = createContext({} as MusicData)
 
-export function CoffeContextProvider({ children }: MusicContextProviderProps){
-    const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>([])
+export function CoffeContextProvider({ children }: MusicContextProviderProps) {
 
+    const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>(localStorageMusicInMyPlaylist)
     const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<PlaylistData | null>(null)
-    const [playlistFiltered, setplaylistFiltered] = useState<PlaylistData | null>(null)
+    const [playlistFiltered, setPlaylistFiltered] = useState<PlaylistData | null>(null)
 
-    function CallSetMusic(data: MusicCardData){
+    useEffect(() => {
+        window.localStorage.setItem('Music', JSON.stringify(musicInMyPlaylist))
+    }, [musicInMyPlaylist])
+
+    function CallSetMusic(data: MusicCardData) {
         setMusicInMyPlaylist((state) => [...state, data])
     }
 
-    function RemoveMusicOnMyPlaylist(data: MusicCardData[]){
+    function RemoveMusicOnMyPlaylist(data: MusicCardData[]) {
         setMusicInMyPlaylist(data)
     }
 
-    function CallFilteredSongsOnPlaylist(data: PlaylistData){
-        setplaylistFiltered(data)
+    function CallFilteredSongsOnPlaylist(data: PlaylistData) {
+        setPlaylistFiltered(data)
     }
 
     useEffect(() => {
@@ -55,10 +58,10 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps){
                 setMusicsOnPlaylist(response.data)
             })
     }, [])
-    
-    return(
-       <MusicContext.Provider 
-            value={{ 
+
+    return (
+        <MusicContext.Provider
+            value={{
                 musicInMyPlaylist,
                 CallSetMusic,
                 RemoveMusicOnMyPlaylist,

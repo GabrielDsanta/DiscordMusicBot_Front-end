@@ -1,19 +1,29 @@
-import { useContext } from "react";
-import { MusicContext } from "../../contexts/MusicContext";
+import { useContext, useState } from "react";
+import { MusicCardData, MusicContext } from "../../contexts/MusicContext";
 import { MusicCard } from "../MusicCard";
 import { ContainerPlaylistCard } from "./styles";
 
 
-export function PlaylistCard(){
+export function PlaylistCard() {
     const { musicsOnPlaylist, playlistFiltered } = useContext(MusicContext)
 
-    return(
+    return (
         <ContainerPlaylistCard>
             <h1>{musicsOnPlaylist?.name}</h1>
 
-            {playlistFiltered?.songs.length! === 0 && musicsOnPlaylist?.songs.map((item) => {
-                return(
-                    <MusicCard 
+            {playlistFiltered?.songs.length > 0 ? (playlistFiltered?.songs.map((item: MusicCardData) => {
+                return (
+                    <MusicCard
+                        key={item.id}
+                        pictureUrl={item.pictureUrl}
+                        artists={item.artists}
+                        name={item.name}
+                        duration={item.duration}
+                    />
+                )
+            })) : musicsOnPlaylist?.songs.map((item: MusicCardData) => {
+                return (
+                    <MusicCard
                         key={item.id}
                         pictureUrl={item.pictureUrl}
                         artists={item.artists}
@@ -22,18 +32,6 @@ export function PlaylistCard(){
                     />
                 )
             })}
-
-            {playlistFiltered?.songs.length! > 0 && (playlistFiltered?.songs.map((item) => {
-                return(
-                    <MusicCard 
-                        key={item.id}
-                        pictureUrl={item.pictureUrl}
-                        artists={item.artists}
-                        name={item.name}
-                        duration={item.duration}
-                    />
-                )
-            }))}
         </ContainerPlaylistCard>
     )
 }

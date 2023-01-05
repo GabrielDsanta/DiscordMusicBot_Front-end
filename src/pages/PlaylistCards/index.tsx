@@ -4,7 +4,7 @@ import { PlaylistCard } from '../../components/PlaylistCard/index'
 import { ModalCreatePlaylist } from '../../components/ModalCreatePlayList'
 import { ChangeEvent, useContext, useState } from "react";
 import { PlusCircle } from "phosphor-react";
-import { MusicContext, PlaylistData } from "../../contexts/MusicContext";
+import { MusicContext, MusicData, PlaylistData } from "../../contexts/MusicContext";
 import { ContainerPlaylistsCards, ContainerCreatePlaylist, CreatePlaylistButton, ContainerCards } from "./styles";
 
 export function PlaylistCards() {
@@ -36,8 +36,8 @@ export function PlaylistCards() {
 
             <ContainerCreatePlaylist>
                 <input
-                    onBlur={FilterPlaylist}
                     type="text"
+                    onBlur={FilterPlaylist}
                     value={inputFilterTextContent}
                     onChange={HandleAddText}
                 />

@@ -22,6 +22,25 @@ export const ContainerCreatePlaylist = styled.div`
     justify-content: space-between;
     width: 52rem;
     margin-right: 2rem;
+
+    input{
+        width: 25rem;
+        height: 2.5rem;
+        font-size: 1rem;
+        margin-bottom: .7rem;
+        padding-left: 1rem;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+
+        color:${(props) => props.theme['gray-100']} ;
+        background:${(props) => props.theme['gray-800']} ;
+
+        &:hover{
+            background:${(props) => props.theme['gray-700']} ;
+         }
+         
+    }
 `
 export const CreatePlaylistButton = styled.button`
     background:${(props) => props.theme['gray-800']} ;

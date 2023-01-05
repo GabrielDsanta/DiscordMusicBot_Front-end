@@ -15,6 +15,7 @@ export const ContainerMusicCard = styled.div`
     padding: .3rem;
 
     &:hover{
+        cursor: pointer;
         background: ${(props) => props.theme['gray-600']};
     }
     img{

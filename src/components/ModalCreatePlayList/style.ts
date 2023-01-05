@@ -8,8 +8,9 @@ export const ContainerButtonCloseModal = styled.div`
   button{
     border: 0;
     color: ${(props => props.theme['gray-100'])};
-    background: #191919;
+    background: ${(props => props.theme['gray-800'])};
     &:hover{
+      cursor: pointer;
       color: ${(props => props.theme['red-500'])};
     }
   }
@@ -96,6 +97,7 @@ export const ContainerButtonSubmit = styled.div`
         cursor: not-allowed;
       }
       &:not(:disabled):hover {
+         cursor: pointer;
         background: ${(props) => props.theme['green-700']};
       }
 

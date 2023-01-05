@@ -26,7 +26,12 @@ export const ContainerPlaylistCard = styled.div`
     
 
     h1{
-        color: #FFF;
         padding: 1rem;
+        color: ${(props) => props.theme['white']};
+
+        &:hover{
+            cursor: pointer;
+            color: ${(props) => props.theme['green-300']};
+        }
     }
 `

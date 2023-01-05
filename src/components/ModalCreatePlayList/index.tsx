@@ -1,5 +1,4 @@
 import { X } from "phosphor-react";
-import { MusicCard } from "../MusicCard";
 import { ContainerButtonCloseModal, ContainerButtonSubmit, ContainerForm, ContainerPlaylistCard, ContainerPlaylistTitle, ContainerDetails } from './style';
 
 import * as zod from 'zod'
@@ -9,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { useContext, useState } from "react";
 import { MusicContext } from "../../contexts/MusicContext";
 import { zodResolver } from '@hookform/resolvers/zod';
+
 
 interface ModalProps {
   onOpen: boolean
@@ -29,23 +29,29 @@ const customStyles = {
   }
 }
 const newPlaylistNameFormValidationSchema = zod.object({
-  PlaylistName: zod.string().min(1, 'Informe o nome da Playlist')
+  playlistName: zod.string().min(1, 'Informe o nome da Playlist'),
 })
 type NewPlaylistFormData = zod.infer<typeof newPlaylistNameFormValidationSchema>
 
 export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
+  const { musicInMyPlaylist } = useContext(MusicContext)
   const { register, handleSubmit, watch, reset } = useForm<NewPlaylistFormData>({
     resolver: zodResolver(newPlaylistNameFormValidationSchema),
     defaultValues: {
-      PlaylistName: ''
+      playlistName: ''
+
     },
   })
-  const { musicInMyPlaylist } = useContext(MusicContext)
-  const playlistName = watch('PlaylistName')
+
+  const playlistName = watch('playlistName')
   const isSubmitDisabled = !playlistName
 
   function handleCreateNewPlaylist(data: NewPlaylistFormData) {
-    console.log(data)
+    const newPlaylist = {
+      PlaylistName: data.playlistName,
+      Songs: musicInMyPlaylist
+    }
+    console.log(newPlaylist)
     reset()
   }
 
@@ -64,10 +70,10 @@ export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
 
       <ContainerForm>
         <form onSubmit={handleSubmit(handleCreateNewPlaylist)}>
-          <label htmlFor="PlaylistName">Playlist Name</label>
+          <label htmlFor="playlistName">Playlist Name</label>
           <input
             id="playlistName"
-            {...register('PlaylistName')} />
+            {...register('playlistName')} />
 
 
           <ContainerPlaylistCard>
@@ -81,7 +87,7 @@ export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
           </ContainerPlaylistCard>
 
           <ContainerButtonSubmit>
-            <button type="submit" disabled={isSubmitDisabled} onClick={onClose}>Create</button>
+            <button type="submit" disabled={isSubmitDisabled}>Create</button>
           </ContainerButtonSubmit>
         </form>
       </ContainerForm>

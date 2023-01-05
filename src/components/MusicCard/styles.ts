@@ -38,7 +38,9 @@ export const ContainerForm = styled.div`
 
 
     &:hover{
-      border: 1px solid ${(props => props.theme['green-300'])};
+        cursor: pointer;
+        background: ${(props) => props.theme['gray-600']};
+
     }
     &::placeholder{
       color: ${(props => props.theme['gray-500'])};

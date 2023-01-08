@@ -1,91 +1,71 @@
-import { X } from "phosphor-react";
-import { MusicCard } from "../MusicCard";
-import { ContainerButtonCloseModal, ContainerButtonSubmit, ContainerForm, ContainerPlaylistCard, ContainerPlaylistTitle, ContainerDetails } from './style';
+import { Plus, Trash } from "phosphor-react";
+import { MouseEvent, useContext } from "react";
+import { MusicCardData, MusicContext } from "../../contexts/MusicContext";
+import { ContainerButtonPLus, ContainerButtonTrash, ContainerMusicCard, ContainerMusicDetails } from "./styles";
 
-import * as zod from 'zod'
-import Modal from 'react-modal'
+export function MusicCard({ id, pictureUrl, artists, name, duration ,icon = 'Plus' }: MusicCardData) {
+    const { CallSetMusic, RemoveMusicOnMyPlaylist, musicInMyPlaylist } = useContext(MusicContext)
 
-import { useForm } from 'react-hook-form'
-import { useContext, useState } from "react";
-import { MusicContext } from "../../contexts/MusicContext";
-import { zodResolver } from '@hookform/resolvers/zod';
+    if(artists?.length! > 15){
+        let arrayString = artists?.split(' ')
+        arrayString = arrayString?.slice(0, 2)
+        artists = arrayString?.join(' ')
+    }
 
-interface ModalProps {
-  onOpen: boolean
-  onClose: () => void
-}
-const customStyles = {
-  content: {
-    width: '480px',
-    height: '380px',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%',
-    borderRadius: '8px',
-    background: '#191919',
-  }
-}
-const newPlaylistNameFormValidationSchema = zod.object({
-  PlaylistName: zod.string().min(1, 'Informe o nome da Playlist')
-})
-type NewPlaylistFormData = zod.infer<typeof newPlaylistNameFormValidationSchema>
+    if(name?.length! > 15){
+        let arrayString = name?.split(' ')
+        arrayString[2]?.length > 10 ? arrayString = arrayString?.slice(0, 2) : arrayString = arrayString?.slice(0, 4)
+        name = arrayString?.join(' ')
+    }
 
-export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
-  const { register, handleSubmit, watch, reset } = useForm<NewPlaylistFormData>({
-    resolver: zodResolver(newPlaylistNameFormValidationSchema),
-    defaultValues: {
-      PlaylistName: ''
-    },
-  })
-  const { musicInMyPlaylist } = useContext(MusicContext)
-  const playlistName = watch('PlaylistName')
-  const isSubmitDisabled = !playlistName
+    function AddMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>){
+        const newMusicOnMyPlaylist: MusicCardData = {
+            pictureUrl: pictureUrl,
+            artists: artists,
+            name: name,
+            duration: duration,
+        }
 
-  function handleCreateNewPlaylist(data: NewPlaylistFormData) {
-    console.log(data)
-    reset()
-  }
+        CallSetMusic(newMusicOnMyPlaylist)
+    }
 
-  if (!onOpen) return null
-  return (
-    <Modal
-      isOpen={onOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-    >
-      <ContainerButtonCloseModal>
-        <button onClick={onClose}>
-          <X size={22} />
-        </button>
-      </ContainerButtonCloseModal>
-
-      <ContainerForm>
-        <form onSubmit={handleSubmit(handleCreateNewPlaylist)}>
-          <label htmlFor="PlaylistName">Playlist Name</label>
-          <input
-            id="playlistName"
-            {...register('PlaylistName')} />
+    function CallRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
+        RemoveMusicOnMyPlaylist(musicInMyPlaylist.filter((musicToBeDelete) => {
+            return name !== musicToBeDelete.name
+        }))
+    }
 
 
-          <ContainerPlaylistCard>
-            <ContainerPlaylistTitle>
-              <span>{playlistName}</span>
-            </ContainerPlaylistTitle>
-            <ContainerDetails>
-              <img src={musicInMyPlaylist[0].pictureUrl} alt="Foto" />
-              <span>Musicas:{musicInMyPlaylist.length}</span>
-            </ContainerDetails>
-          </ContainerPlaylistCard>
+    return (
+        <ContainerMusicCard>
+            <ContainerMusicDetails>
+                <img
+                    height={40}
+                    width={40}
+                    src={pictureUrl}
+                    alt="Foto Do Artista"
+                />
+                
+                <div>
+                    <h2>{name}</h2>
+                    <h3>{artists}</h3>
+                </div>
+            </ContainerMusicDetails>
 
-          <ContainerButtonSubmit>
-            <button type="submit" disabled={isSubmitDisabled} onClick={onClose}>Create</button>
-          </ContainerButtonSubmit>
-        </form>
-      </ContainerForm>
+            <ContainerMusicDetails>
+                <h4>3:20</h4>
+                {icon === 'Delete' ? (
+                    <ContainerButtonTrash onClick={CallRemoveMusicOnMyPlaylist}>
+                            <Trash size={30} />
+                    </ContainerButtonTrash>
 
-    </Modal>
-  )
+                ) :
+                    <ContainerButtonPLus onClick={AddMusicOnMyPlaylist}>
+                            <Plus size={30} weight="duotone" />
+                    </ContainerButtonPLus>
+
+                }
+            </ContainerMusicDetails>
+        </ContainerMusicCard>
+    )
 }

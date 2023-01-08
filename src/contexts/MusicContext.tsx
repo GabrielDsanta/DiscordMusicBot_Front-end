@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface MusicCardData {
     id?: string
@@ -9,19 +10,24 @@ export interface MusicCardData {
     duration: number
     icon?: 'Plus' | 'Delete'
 }
+
 const localStorageMusicInMyPlaylist = localStorage.getItem('Music') !== null ? JSON.parse(localStorage.getItem('Music')!) : [];
+
 export interface PlaylistData {
+    id: string
     artists: string[]
     name: string
     songs: InstanceType<typeof localStorageMusicInMyPlaylist>
 }
+
 export interface MusicData {
     musicInMyPlaylist: MusicCardData[]
-    musicsOnPlaylist: PlaylistData | null
+    musicsOnPlaylist: PlaylistData[]
     playlistFiltered: PlaylistData | null
     CallSetMusic: (data: MusicCardData) => void
     RemoveMusicOnMyPlaylist: (data: MusicCardData[]) => void
     CallFilteredSongsOnPlaylist: (data: PlaylistData) => void
+    CallSetSongsOnPlaylist: (data: PlaylistData[]) => void
 }
 
 interface MusicContextProviderProps {
@@ -31,9 +37,8 @@ interface MusicContextProviderProps {
 export const MusicContext = createContext({} as MusicData)
 
 export function CoffeContextProvider({ children }: MusicContextProviderProps) {
-
     const [musicInMyPlaylist, setMusicInMyPlaylist] = useState<MusicCardData[]>(localStorageMusicInMyPlaylist)
-    const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<PlaylistData | null>(null)
+    const [musicsOnPlaylist, setMusicsOnPlaylist] = useState<PlaylistData[]>([])
     const [playlistFiltered, setPlaylistFiltered] = useState<PlaylistData | null>(null)
 
     useEffect(() => {
@@ -52,10 +57,15 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps) {
         setPlaylistFiltered(data)
     }
 
+    function CallSetSongsOnPlaylist(data: PlaylistData[]){
+        data === null ? setMusicsOnPlaylist((state) => [...state, data]) : setMusicsOnPlaylist(data)
+    }
+
     useEffect(() => {
         axios.get('http://ec2-54-167-129-32.compute-1.amazonaws.com:3000/playlists/37i9dQZF1DZ06evO0aGty0')
             .then(response => {
-                setMusicsOnPlaylist(response.data)
+                response.data.id = uuidv4()
+                setMusicsOnPlaylist((state) => [...state, response.data])
             })
     }, [])
 
@@ -67,7 +77,8 @@ export function CoffeContextProvider({ children }: MusicContextProviderProps) {
                 RemoveMusicOnMyPlaylist,
                 musicsOnPlaylist,
                 CallFilteredSongsOnPlaylist,
-                playlistFiltered
+                playlistFiltered,
+                CallSetSongsOnPlaylist
             }}
         >
             {children}

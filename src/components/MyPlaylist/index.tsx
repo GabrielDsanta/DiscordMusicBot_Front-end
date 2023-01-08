@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { MusicContext } from "../../contexts/MusicContext";
 import { MusicCard } from "../MusicCard";
 import { ContainerPlaylistCard } from "../PlaylistCard/styles";
@@ -13,6 +13,8 @@ export function MyPlaylist() {
                 {musicInMyPlaylist.map((item) => {
                     return (
                         <MusicCard
+                            id={item.id}
+                            key={item.id}
                             pictureUrl={item.pictureUrl}
                             artists={item.artists}
                             name={item.name}

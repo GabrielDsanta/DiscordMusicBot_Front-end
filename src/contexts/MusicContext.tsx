@@ -8,10 +8,12 @@ export interface MusicData {
   musicInMyPlaylist: MusicCardData[]
   musicsOnPlaylist: PlaylistData[]
   playlistFiltered: PlaylistData | null
+  inputFilterTextContent: string
   CallDeletePlaylist: (id: string) => void
   CallSetMusic: (data: MusicCardData) => void
   CallDeleteMusicOnMyPlaylist: (data: string) => void
   CallFilteredSongsOnPlaylist: (data: PlaylistData) => void
+  CallSetInputFilterTextContent: (data: string) => void
 }
 
 interface MusicContextProviderProps {
@@ -28,7 +30,11 @@ export function MusicContextProvider({ children }: MusicContextProviderProps) {
   const [playlistFiltered, setPlaylistFiltered] = useState<PlaylistData | null>(
     null,
   )
+  const [inputFilterTextContent, setInputFilterTextContent] = useState('')
 
+  function CallSetInputFilterTextContent(data: string) {
+    setInputFilterTextContent(data)
+  }
   function CallSetMusic(data: MusicCardData) {
     setMusicInMyPlaylist((state) => [...state, data])
   }
@@ -67,6 +73,8 @@ export function MusicContextProvider({ children }: MusicContextProviderProps) {
   return (
     <MusicContext.Provider
       value={{
+        inputFilterTextContent,
+        CallSetInputFilterTextContent,
         musicInMyPlaylist,
         CallSetMusic,
         CallDeleteMusicOnMyPlaylist,

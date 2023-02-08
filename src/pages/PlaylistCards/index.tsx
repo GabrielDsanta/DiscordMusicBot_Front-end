@@ -15,39 +15,45 @@ import {
   ContainerCards,
   ContainerFilterButton,
   ContainerFilterOptions,
-  InputFindPlaylist,
   ContainerInputFilterArtist,
   ContainerButtonHandleFilter,
-  ContainerFindPLaylist,
-  ContainerButtonFindPlaylist,
 } from './styles'
+import { FindPlaylist } from '../../components/FindPlaylist'
 
 export function PlaylistCards() {
   const [openModal, setOpenModal] = useState(false)
-  const [inputFilterTextContent, setInputFilterTextContent] = useState('')
   const [isFilterOptionsOpen, setIsFilterOptionsOpen] = useState(true)
 
-  const { musicsOnPlaylist, CallFilteredSongsOnPlaylist, musicInMyPlaylist } =
-    useContext(MusicContext)
+  const {
+    musicsOnPlaylist,
+    CallFilteredSongsOnPlaylist,
+    musicInMyPlaylist,
+    inputFilterTextContent,
+    CallSetInputFilterTextContent,
+  } = useContext(MusicContext)
 
   const isButtonCreatePlaylistDisable = musicInMyPlaylist.length === 0
 
   // function FilterPlaylist() {
-  //     const filteredPlaylist = musicsOnPlaylist?.songs.filter((item: MusicCardData) => {
-  //         return item.artists.toLowerCase().includes(inputFilterTextContent.toLowerCase())
-  //     })
+  //   const filteredPlaylist = musicsOnPlaylist?.songs.filter(
+  //     (item: MusicCardData) => {
+  //       return item.artists
+  //         .toLowerCase()
+  //         .includes(inputFilterTextContent.toLowerCase())
+  //     },
+  //   )
 
-  //     const newPlaylist: PlaylistData = {
-  //         artists: musicsOnPlaylist?.artists!,
-  //         name: musicsOnPlaylist?.name!,
-  //         songs: filteredPlaylist!,
-  //     }
+  //   const newPlaylist: PlaylistData = {
+  //     artists: musicsOnPlaylist?.artists!,
+  //     name: musicsOnPlaylist?.name!,
+  //     songs: filteredPlaylist!,
+  //   }
 
-  //     CallFilteredSongsOnPlaylist(newPlaylist)
+  //   CallFilteredSongsOnPlaylist(newPlaylist)
   // }
 
   function HandleAddText(event: ChangeEvent<HTMLInputElement>) {
-    setInputFilterTextContent(event.target.value)
+    CallSetInputFilterTextContent(event.target.value)
   }
 
   function HandleOpenFilterOptions() {
@@ -56,20 +62,8 @@ export function PlaylistCards() {
 
   return (
     <ContainerPlaylistsCards>
-      {/* Quebrar em um Componente */}
       <ContainerCreatePlaylist>
-        <ContainerFindPLaylist>
-          <InputFindPlaylist
-            type="text"
-            // onBlur={FilterPlaylist}
-            value={inputFilterTextContent}
-            onChange={HandleAddText}
-          />
-          <ContainerButtonFindPlaylist>
-            <MagnifyingGlass size={28} />
-          </ContainerButtonFindPlaylist>
-        </ContainerFindPLaylist>
-        {/* //////////////////// */}
+        <FindPlaylist addText={HandleAddText} />
 
         {/* Quebrar em um Componente */}
         <CreatePlaylistButton

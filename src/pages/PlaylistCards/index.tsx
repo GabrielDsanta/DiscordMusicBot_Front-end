@@ -12,17 +12,13 @@ import {
   ContainerPlaylistsCards,
   ContainerCreatePlaylist,
   ContainerCards,
-  ContainerFilterButton,
-  ContainerFilterOptions,
-  ContainerInputFilterArtist,
-  ContainerButtonHandleFilter,
 } from './styles'
 import { FindPlaylist } from '../../components/FindPlaylist'
 import { CreatePlaylist } from '../../components/CreatePlaylist'
+import { FilterPlaylist } from '../../components/FilterPlaylist'
 
 export function PlaylistCards() {
   const [openModal, setOpenModal] = useState(false)
-  const [isFilterOptionsOpen, setIsFilterOptionsOpen] = useState(true)
 
   const {
     musicsOnPlaylist,
@@ -50,40 +46,14 @@ export function PlaylistCards() {
   //   CallFilteredSongsOnPlaylist(newPlaylist)
   // }
 
-  function HandleAddText(event: ChangeEvent<HTMLInputElement>) {
-    CallSetInputFilterTextContent(event.target.value)
-  }
-
-  function HandleOpenFilterOptions() {
-    setIsFilterOptionsOpen(!isFilterOptionsOpen)
-  }
-
   return (
     <ContainerPlaylistsCards>
       <ContainerCreatePlaylist>
-        <FindPlaylist addText={HandleAddText} />
+        <FindPlaylist />
 
         <CreatePlaylist />
 
-        {/* Quebrar em um Componente */}
-        <ContainerFilterButton onClick={HandleOpenFilterOptions}>
-          <FunnelSimple size={28} />
-        </ContainerFilterButton>
-
-        {isFilterOptionsOpen && (
-          <ContainerFilterOptions>
-            <label htmlFor="">Artista</label>
-
-            <ContainerInputFilterArtist>
-              <input type="text" />
-
-              <ContainerButtonHandleFilter>
-                <MagnifyingGlass size={20} />
-              </ContainerButtonHandleFilter>
-            </ContainerInputFilterArtist>
-          </ContainerFilterOptions>
-        )}
-        {/* //////////////////// */}
+        <FilterPlaylist />
       </ContainerCreatePlaylist>
 
       <ContainerCards>

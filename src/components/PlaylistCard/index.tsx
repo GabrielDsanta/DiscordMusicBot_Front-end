@@ -6,59 +6,52 @@ import { MusicCardData } from '../../models/music'
 import { PlaylistData } from '../../models/playlist'
 import { MusicContext } from '../../contexts/MusicContext'
 import {
-	ContainerButtonRemovePlaylist,
-	ContainerPlaylistCard,
-	ContainerTitlePlaylist,
+  ContainerButtonRemovePlaylist,
+  ContainerPlaylistCard,
+  ContainerTitlePlaylist,
 } from './styles'
 
 export function PlaylistCard({ id, name, artists, songs }: PlaylistData) {
-	const { musicsOnPlaylist, playlistFiltered, CallSetSongsOnPlaylist } =
-		useContext(MusicContext)
+  const { playlistFiltered, CallDeletePlaylist } = useContext(MusicContext)
 
-	function HandleDeletePlaylist() {
-		const playlistToBeDeleted = musicsOnPlaylist?.filter(
-			(item: PlaylistData) => {
-				return item.id !== id
-			},
-		)
+  function HandleDeletePlaylist() {
+    CallDeletePlaylist(id)
+  }
 
-		CallSetSongsOnPlaylist(playlistToBeDeleted!)
-	}
+  return (
+    <ContainerPlaylistCard>
+      <ContainerTitlePlaylist>
+        <h1>{name}</h1>
 
-	return (
-		<ContainerPlaylistCard>
-			<ContainerTitlePlaylist>
-				<h1>{name}</h1>
+        <ContainerButtonRemovePlaylist onClick={HandleDeletePlaylist}>
+          <X size={32} />
+        </ContainerButtonRemovePlaylist>
+      </ContainerTitlePlaylist>
 
-				<ContainerButtonRemovePlaylist onClick={HandleDeletePlaylist}>
-					<X size={32} />
-				</ContainerButtonRemovePlaylist>
-			</ContainerTitlePlaylist>
-
-			{playlistFiltered?.songs.length > 0
-				? playlistFiltered?.songs.map((item: MusicCardData) => {
-					return (
-						<MusicCard
-							key={uuidv4()}
-							pictureUrl={item.pictureUrl}
-							artists={item.artists}
-							name={item.name}
-							duration={item.duration}
-						/>
-					)
-				})
-				: songs.map((item: MusicCardData) => {
-					return (
-						<MusicCard
-							id={uuidv4()}
-							key={uuidv4()}
-							pictureUrl={item.pictureUrl}
-							artists={item.artists}
-							name={item.name}
-							duration={item.duration}
-						/>
-					)
-				})}
-		</ContainerPlaylistCard>
-	)
+      {playlistFiltered?.songs.length > 0
+        ? playlistFiltered?.songs.map((item: MusicCardData) => {
+          return (
+            <MusicCard
+              key={uuidv4()}
+              pictureUrl={item.pictureUrl}
+              artists={item.artists}
+              name={item.name}
+              duration={item.duration}
+            />
+          )
+        })
+        : songs.map((item: MusicCardData) => {
+          return (
+            <MusicCard
+              id={uuidv4()}
+              key={uuidv4()}
+              pictureUrl={item.pictureUrl}
+              artists={item.artists}
+              name={item.name}
+              duration={item.duration}
+            />
+          )
+        })}
+    </ContainerPlaylistCard>
+  )
 }

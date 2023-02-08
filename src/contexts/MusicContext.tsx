@@ -8,10 +8,10 @@ export interface MusicData {
   musicInMyPlaylist: MusicCardData[]
   musicsOnPlaylist: PlaylistData[]
   playlistFiltered: PlaylistData | null
+  CallDeletePlaylist: (id: string) => void
   CallSetMusic: (data: MusicCardData) => void
-  RemoveMusicOnMyPlaylist: (data: string) => void
+  CallDeleteMusicOnMyPlaylist: (data: string) => void
   CallFilteredSongsOnPlaylist: (data: PlaylistData) => void
-  CallSetSongsOnPlaylist: (data: PlaylistData[]) => void
 }
 
 interface MusicContextProviderProps {
@@ -29,30 +29,29 @@ export function MusicContextProvider({ children }: MusicContextProviderProps) {
     null,
   )
 
-  useEffect(() => {
-    window.localStorage.setItem('Music', JSON.stringify(musicInMyPlaylist))
-  }, [musicInMyPlaylist])
-
   function CallSetMusic(data: MusicCardData) {
     setMusicInMyPlaylist((state) => [...state, data])
   }
-
-  function RemoveMusicOnMyPlaylist(data: string) {
-    const updatedPlaylist = musicInMyPlaylist.filter((musicToBeDelete) => {
-      return data !== musicToBeDelete
-    })
-    setMusicInMyPlaylist(updatedPlaylist)
-  }
-
   function CallFilteredSongsOnPlaylist(data: PlaylistData) {
     setPlaylistFiltered(data)
   }
 
-  function CallSetSongsOnPlaylist(data: PlaylistData[]) {
-    data === null
-      ? setMusicsOnPlaylist((state) => [...state, data])
-      : setMusicsOnPlaylist(data)
+  function CallDeleteMusicOnMyPlaylist(data: string) {
+    const updatedPlaylist = musicInMyPlaylist.filter((musicToBeDelete) => {
+      return data !== musicToBeDelete.name
+    })
+    setMusicInMyPlaylist(updatedPlaylist)
   }
+  function CallDeletePlaylist(id: string) {
+    const playlistToBeDeleted = musicsOnPlaylist?.filter((item) => {
+      return item.id !== id
+    })
+    setMusicsOnPlaylist(playlistToBeDeleted)
+  }
+
+  useEffect(() => {
+    window.localStorage.setItem('Music', JSON.stringify(musicInMyPlaylist))
+  }, [musicInMyPlaylist])
 
   useEffect(() => {
     axios
@@ -70,11 +69,12 @@ export function MusicContextProvider({ children }: MusicContextProviderProps) {
       value={{
         musicInMyPlaylist,
         CallSetMusic,
-        RemoveMusicOnMyPlaylist,
+        CallDeleteMusicOnMyPlaylist,
         musicsOnPlaylist,
         CallFilteredSongsOnPlaylist,
         playlistFiltered,
-        CallSetSongsOnPlaylist,
+
+        CallDeletePlaylist,
       }}
     >
       {children}

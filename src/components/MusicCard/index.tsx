@@ -11,13 +11,13 @@ import {
 
 export function MusicCard({
   id,
-  pictureUrl,
-  artists,
   name,
+  artists,
   duration,
+  pictureUrl,
   icon = 'Plus',
 }: MusicCardData) {
-  const { CallSetMusic, RemoveMusicOnMyPlaylist } = useContext(MusicContext)
+  const { CallSetMusic, CallDeleteMusicOnMyPlaylist } = useContext(MusicContext)
 
   if (artists?.length! > 15) {
     let arrayString = artists?.split(' ')
@@ -45,7 +45,7 @@ export function MusicCard({
   }
 
   function HandleRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
-    RemoveMusicOnMyPlaylist(name)
+    CallDeleteMusicOnMyPlaylist(name)
   }
 
   return (

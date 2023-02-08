@@ -1,43 +1,26 @@
 import * as zod from 'zod'
-import Modal from 'react-modal'
+import * as Dialog from '@radix-ui/react-dialog'
 import { useContext } from 'react'
 import { X } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MusicContext } from '../../contexts/MusicContext'
 import {
-  ContainerButtonCloseModal,
-  ContainerButtonSubmit,
-  ContainerForm,
-  ContainerPlaylistCard,
-  ContainerPlaylistTitle,
-  ContainerDetails,
+  Overlay,
+  Content,
+  ButtonClose,
+  ButtonSubmit,
+  PlaylistCard,
+  PlaylistTitle,
+  Details,
 } from './style'
 
-interface ModalProps {
-  onOpen: boolean
-  onClose: () => void
-}
-const customStyles = {
-  content: {
-    width: '480px',
-    height: '380px',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%',
-    borderRadius: '8px',
-    background: '#191919',
-  },
-}
 const newPlaylistNameFormValidationSchema = zod.object({
   playlistName: zod.string().min(1, 'Informe o nome da Playlist'),
 })
 type NewPlaylistFormData = zod.infer<typeof newPlaylistNameFormValidationSchema>
 
-export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
+export function CreateNewPlaylistModal() {
   const { musicInMyPlaylist } = useContext(MusicContext)
   const { register, handleSubmit, watch, reset } = useForm<NewPlaylistFormData>(
     {
@@ -60,37 +43,36 @@ export function ModalCreatePlaylist({ onOpen, onClose }: ModalProps) {
     reset()
   }
 
-  if (!onOpen) return null
   return (
-    <Modal isOpen={onOpen} onRequestClose={onClose} style={customStyles}>
-      <ContainerButtonCloseModal>
-        <button onClick={onClose}>
-          <X size={22} />
-        </button>
-      </ContainerButtonCloseModal>
+    <Dialog.Portal>
+      <Overlay />
 
-      <ContainerForm>
+      <Content>
+        <ButtonClose>
+          <X size={22} />
+        </ButtonClose>
+
         <form onSubmit={handleSubmit(handleCreateNewPlaylist)}>
           <label htmlFor="playlistName">Playlist Name</label>
           <input id="playlistName" {...register('playlistName')} />
 
-          <ContainerPlaylistCard>
-            <ContainerPlaylistTitle>
+          <PlaylistCard>
+            <PlaylistTitle>
               <span>{playlistName}</span>
-            </ContainerPlaylistTitle>
-            <ContainerDetails>
+            </PlaylistTitle>
+            <Details>
               <img src={musicInMyPlaylist[0].pictureUrl} alt="Foto" />
               <span>Musicas:{musicInMyPlaylist.length}</span>
-            </ContainerDetails>
-          </ContainerPlaylistCard>
+            </Details>
+          </PlaylistCard>
 
-          <ContainerButtonSubmit>
+          <ButtonSubmit>
             <button type="submit" disabled={isSubmitDisabled}>
               Create
             </button>
-          </ContainerButtonSubmit>
+          </ButtonSubmit>
         </form>
-      </ContainerForm>
-    </Modal>
+      </Content>
+    </Dialog.Portal>
   )
 }

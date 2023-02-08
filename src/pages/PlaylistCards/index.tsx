@@ -2,7 +2,7 @@ import { MyPlaylist } from '../../components/MyPlaylist'
 import { PlaylistCard } from '../../components/PlaylistCard/index'
 import { ModalCreatePlaylist } from '../../components/ModalCreatePlayList'
 import { ChangeEvent, useContext, useState } from 'react'
-import { PlusCircle, FunnelSimple, MagnifyingGlass } from 'phosphor-react'
+import { FunnelSimple, MagnifyingGlass } from 'phosphor-react'
 import {
   MusicCardData,
   MusicContext,
@@ -11,7 +11,6 @@ import {
 import {
   ContainerPlaylistsCards,
   ContainerCreatePlaylist,
-  CreatePlaylistButton,
   ContainerCards,
   ContainerFilterButton,
   ContainerFilterOptions,
@@ -19,6 +18,7 @@ import {
   ContainerButtonHandleFilter,
 } from './styles'
 import { FindPlaylist } from '../../components/FindPlaylist'
+import { CreatePlaylist } from '../../components/CreatePlaylist'
 
 export function PlaylistCards() {
   const [openModal, setOpenModal] = useState(false)
@@ -31,8 +31,6 @@ export function PlaylistCards() {
     inputFilterTextContent,
     CallSetInputFilterTextContent,
   } = useContext(MusicContext)
-
-  const isButtonCreatePlaylistDisable = musicInMyPlaylist.length === 0
 
   // function FilterPlaylist() {
   //   const filteredPlaylist = musicsOnPlaylist?.songs.filter(
@@ -65,15 +63,7 @@ export function PlaylistCards() {
       <ContainerCreatePlaylist>
         <FindPlaylist addText={HandleAddText} />
 
-        {/* Quebrar em um Componente */}
-        <CreatePlaylistButton
-          onClick={() => setOpenModal(true)}
-          disabled={isButtonCreatePlaylistDisable}
-        >
-          <PlusCircle weight="fill" size={28} />
-          Create Playlist
-        </CreatePlaylistButton>
-        {/* //////////////////// */}
+        <CreatePlaylist />
 
         {/* Quebrar em um Componente */}
         <ContainerFilterButton onClick={HandleOpenFilterOptions}>

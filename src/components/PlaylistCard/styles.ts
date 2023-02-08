@@ -35,3 +35,29 @@ export const ContainerPlaylistCard = styled.div`
         }
     }
 `
+
+export const ContainerTitlePlaylist = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 25rem;
+
+    h1{
+        margin-left: 2.5rem;
+    }
+`
+
+export const ContainerButtonRemovePlaylist = styled.button`
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 5rem;
+    margin-right: -1.5rem;
+    color: ${(props) => props.theme['gray-100']};
+
+    &:hover{
+        transition: all .3s;
+        color:${(props) => props.theme['red-500']};
+    }
+`

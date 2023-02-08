@@ -1,57 +1,76 @@
-import { Plus, Trash } from "phosphor-react";
-import { MouseEvent, useContext } from "react";
-import { MusicCardData, MusicContext } from "../../contexts/MusicContext";
-import { ContainerMusicCard, ContainerMusicDetails } from "./styles";
+import { Plus, Trash } from 'phosphor-react'
+import { MouseEvent, useContext } from 'react'
+import { MusicCardData } from '../../models/music'
+import { MusicContext } from '../../contexts/MusicContext'
+import {
+  ContainerButtonPLus,
+  ContainerButtonTrash,
+  ContainerMusicCard,
+  ContainerMusicDetails,
+} from './styles'
 
-export function MusicCard({ imageSrc, artist, musicName, minutesDurationMusic, secondsDurationMusic, icon = 'Plus' }: MusicCardData) {
-    const { CallSetMusic, RemoveMusicOnMyPlaylist, musicInMyPlaylist } = useContext(MusicContext)
+export function MusicCard({
+  id,
+  name,
+  artists,
+  duration,
+  pictureUrl,
+  icon = 'Plus',
+}: MusicCardData) {
+  const { CallSetMusic, CallDeleteMusicOnMyPlaylist } = useContext(MusicContext)
 
-    function AddMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>){
-        const newMusicOnMyPlaylist: MusicCardData = {
-            imageSrc: imageSrc,
-            artist: artist,
-            musicName: musicName,
-            minutesDurationMusic: '3',
-            secondsDurationMusic: '20'
-        }
+  if (artists?.length! > 15) {
+    let arrayString = artists?.split(' ')
+    arrayString = arrayString?.slice(0, 2)
+    artists = arrayString?.join(' ')
+  }
 
-        CallSetMusic(newMusicOnMyPlaylist)
+  if (name?.length! > 15) {
+    let arrayString = name?.split(' ')
+    arrayString[2]?.length > 10
+      ? (arrayString = arrayString?.slice(0, 2))
+      : (arrayString = arrayString?.slice(0, 4))
+    name = arrayString?.join(' ')
+  }
+
+  function HandleAddMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
+    const newMusicOnMyPlaylist: MusicCardData = {
+      pictureUrl,
+      artists,
+      name,
+      duration,
     }
 
-    function CallRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>){
-        RemoveMusicOnMyPlaylist(musicInMyPlaylist.filter((musicToBeDelete) => {
-            return musicName !== musicToBeDelete.musicName
-        }))
-    }
+    CallSetMusic(newMusicOnMyPlaylist)
+  }
 
+  function HandleRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
+    CallDeleteMusicOnMyPlaylist(name)
+  }
 
-    return (
-        <ContainerMusicCard>
-            <ContainerMusicDetails>
-                <img
-                    height={40}
-                    width={42}
-                    src={imageSrc}
-                    alt="Foto Do Artista"
-                />
-                <div>
-                    <h2>{artist}</h2>
-                    <h3>{musicName}</h3>
-                </div>
-            </ContainerMusicDetails>
+  return (
+    <ContainerMusicCard>
+      <ContainerMusicDetails>
+        <img height={40} width={40} src={pictureUrl} alt="Foto Do Artista" />
 
-            <ContainerMusicDetails>
-                <h4>{minutesDurationMusic}:{secondsDurationMusic}</h4>
-                {icon === 'Delete' ? (
-                    <button onClick={CallRemoveMusicOnMyPlaylist}>
-                        <Trash size={30} color="#ce4853" />
-                    </button>
-                ):
-                    <button onClick={AddMusicOnMyPlaylist}>
-                        <Plus size={30} color="white" weight="duotone" />
-                    </button>
-                }
-            </ContainerMusicDetails>
-        </ContainerMusicCard>
-    )
+        <div>
+          <h2>{name}</h2>
+          <h3>{artists}</h3>
+        </div>
+      </ContainerMusicDetails>
+
+      <ContainerMusicDetails>
+        <h4>3:20</h4>
+        {icon === 'Delete' ? (
+          <ContainerButtonTrash onClick={HandleRemoveMusicOnMyPlaylist}>
+            <Trash size={30} />
+          </ContainerButtonTrash>
+        ) : (
+          <ContainerButtonPLus onClick={HandleAddMusicOnMyPlaylist}>
+            <Plus size={30} weight="duotone" />
+          </ContainerButtonPLus>
+        )}
+      </ContainerMusicDetails>
+    </ContainerMusicCard>
+  )
 }

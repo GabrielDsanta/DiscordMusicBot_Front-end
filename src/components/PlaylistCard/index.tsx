@@ -1,18 +1,57 @@
-import { MusicCard } from "../MusicCard";
-import { ContainerPlaylistCard } from "./styles";
+import { useContext } from 'react'
+import { X } from 'phosphor-react'
+import { v4 as uuidv4 } from 'uuid'
+import { MusicCard } from '../MusicCard'
+import { MusicCardData } from '../../models/music'
+import { PlaylistData } from '../../models/playlist'
+import { MusicContext } from '../../contexts/MusicContext'
+import {
+  ContainerButtonRemovePlaylist,
+  ContainerPlaylistCard,
+  ContainerTitlePlaylist,
+} from './styles'
 
+export function PlaylistCard({ id, name, artists, songs }: PlaylistData) {
+  const { playlistFiltered, CallDeletePlaylist } = useContext(MusicContext)
 
-export function PlaylistCard(){
-    return(
-        <ContainerPlaylistCard>
-            <h1>New Releases</h1>
-            <MusicCard 
-                imageSrc="https://images.unsplash.com/photo-1504898770365-14faca6a7320?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=767&q=80"
-                artist="Post Malone"
-                minutesDurationMusic="3"
-                secondsDurationMusic="20"
-                musicName="Better Now"
+  function HandleDeletePlaylist() {
+    CallDeletePlaylist(id)
+  }
+
+  return (
+    <ContainerPlaylistCard>
+      <ContainerTitlePlaylist>
+        <h1>{name}</h1>
+
+        <ContainerButtonRemovePlaylist onClick={HandleDeletePlaylist}>
+          <X size={32} />
+        </ContainerButtonRemovePlaylist>
+      </ContainerTitlePlaylist>
+
+      {playlistFiltered?.songs.length > 0
+        ? playlistFiltered?.songs.map((item: MusicCardData) => {
+          return (
+            <MusicCard
+              key={uuidv4()}
+              pictureUrl={item.pictureUrl}
+              artists={item.artists}
+              name={item.name}
+              duration={item.duration}
             />
-        </ContainerPlaylistCard>
-    )
+          )
+        })
+        : songs.map((item: MusicCardData) => {
+          return (
+            <MusicCard
+              id={uuidv4()}
+              key={uuidv4()}
+              pictureUrl={item.pictureUrl}
+              artists={item.artists}
+              name={item.name}
+              duration={item.duration}
+            />
+          )
+        })}
+    </ContainerPlaylistCard>
+  )
 }

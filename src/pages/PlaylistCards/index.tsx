@@ -1,25 +1,23 @@
+import * as Dialog from '@radix-ui/react-dialog'
+
+import { useContext } from 'react'
+import { MusicContext } from '../../contexts/MusicContext'
+
 import { MyPlaylist } from '../../components/MyPlaylist'
+import { FindPlaylist } from '../../components/FindPlaylist'
+import { FilterPlaylist } from '../../components/FilterPlaylist'
 import { PlaylistCard } from '../../components/PlaylistCard/index'
-import { ModalCreatePlaylist } from '../../components/ModalCreatePlayList'
-import { ChangeEvent, useContext, useState } from 'react'
-import { FunnelSimple, MagnifyingGlass } from 'phosphor-react'
-import {
-  MusicCardData,
-  MusicContext,
-  PlaylistData,
-} from '../../contexts/MusicContext'
+import { CreateNewPlaylistModal } from '../../components/CreateNewPlayListModal'
+
 import {
   ContainerPlaylistsCards,
   ContainerCreatePlaylist,
   ContainerCards,
+  CreatePlaylistButton,
 } from './styles'
-import { FindPlaylist } from '../../components/FindPlaylist'
-import { CreatePlaylist } from '../../components/CreatePlaylist'
-import { FilterPlaylist } from '../../components/FilterPlaylist'
+import { PlusCircle } from 'phosphor-react'
 
 export function PlaylistCards() {
-  const [openModal, setOpenModal] = useState(false)
-
   const {
     musicsOnPlaylist,
     CallFilteredSongsOnPlaylist,
@@ -27,6 +25,8 @@ export function PlaylistCards() {
     inputFilterTextContent,
     CallSetInputFilterTextContent,
   } = useContext(MusicContext)
+
+  const isButtonCreatePlaylistDisable = musicInMyPlaylist.length === 0
 
   // function FilterPlaylist() {
   //   const filteredPlaylist = musicsOnPlaylist?.songs.filter(
@@ -51,14 +51,23 @@ export function PlaylistCards() {
       <ContainerCreatePlaylist>
         <FindPlaylist />
 
-        <CreatePlaylist />
+        <Dialog.Root>
+          <Dialog.Trigger asChild>
+            <CreatePlaylistButton disabled={isButtonCreatePlaylistDisable}>
+              <PlusCircle weight="fill" size={28} />
+              Create Playlist
+            </CreatePlaylistButton>
+          </Dialog.Trigger>
+
+          <CreateNewPlaylistModal />
+        </Dialog.Root>
 
         <FilterPlaylist />
       </ContainerCreatePlaylist>
 
       <ContainerCards>
         {musicsOnPlaylist.length > 0 &&
-          musicsOnPlaylist?.map((item: PlaylistData, index) => {
+          musicsOnPlaylist?.map((item, index) => {
             if (index > 0) {
               return (
                 <PlaylistCard
@@ -73,11 +82,6 @@ export function PlaylistCards() {
           })}
         <MyPlaylist />
       </ContainerCards>
-
-      <ModalCreatePlaylist
-        onOpen={openModal}
-        onClose={() => setOpenModal(false)}
-      />
     </ContainerPlaylistsCards>
   )
 }

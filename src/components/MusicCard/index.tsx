@@ -8,6 +8,8 @@ import {
   ContainerMusicCard,
   ContainerMusicDetails,
 } from './styles'
+import { useFormatArtist } from '../../hooks/useFormatArtist'
+import { useFormatName } from '../../hooks/useFormatName'
 
 export function MusicCard({
   id,
@@ -19,29 +21,11 @@ export function MusicCard({
 }: MusicCardData) {
   const { CallSetMusic, CallDeleteMusicOnMyPlaylist } = useContext(MusicContext)
 
-  if (artists?.length! > 15) {
-    let arrayString = artists?.split(' ')
-    arrayString = arrayString?.slice(0, 2)
-    artists = arrayString?.join(' ')
-  }
-
-  if (name?.length! > 15) {
-    let arrayString = name?.split(' ')
-    arrayString[2]?.length > 10
-      ? (arrayString = arrayString?.slice(0, 2))
-      : (arrayString = arrayString?.slice(0, 4))
-    name = arrayString?.join(' ')
-  }
+  const nameFormat = useFormatName(name)
+  const artistsFormat = useFormatArtist(artists)
 
   function HandleAddMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
-    const newMusicOnMyPlaylist: MusicCardData = {
-      pictureUrl,
-      artists,
-      name,
-      duration,
-    }
-
-    CallSetMusic(newMusicOnMyPlaylist)
+    CallSetMusic({ pictureUrl, artists, name, duration })
   }
 
   function HandleRemoveMusicOnMyPlaylist(e: MouseEvent<HTMLButtonElement>) {
@@ -54,8 +38,8 @@ export function MusicCard({
         <img height={40} width={40} src={pictureUrl} alt="Foto Do Artista" />
 
         <div>
-          <h2>{name}</h2>
-          <h3>{artists}</h3>
+          <h2>{nameFormat}</h2>
+          <h3>{artistsFormat}</h3>
         </div>
       </ContainerMusicDetails>
 

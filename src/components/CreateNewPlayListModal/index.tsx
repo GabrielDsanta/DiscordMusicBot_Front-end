@@ -61,7 +61,7 @@ export function CreateNewPlaylistModal() {
               <span>{playlistName}</span>
             </PlaylistTitle>
             <Details>
-              <img src={musicInMyPlaylist[0].pictureUrl} alt="Foto" />
+              <img src={musicInMyPlaylist.pictureUrl} alt="Foto" />
               <span>Musicas:{musicInMyPlaylist.length}</span>
             </Details>
           </PlaylistCard>

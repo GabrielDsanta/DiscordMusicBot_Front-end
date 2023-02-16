@@ -87,6 +87,11 @@ export const InputsLogin = styled.div`
     }
   }
 `
+export const Error = styled.p`
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+`
 export const BaseButton = styled.button`
   width: 21.6875rem;
   height: 3.125rem;

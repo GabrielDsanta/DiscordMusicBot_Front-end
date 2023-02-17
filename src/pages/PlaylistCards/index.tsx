@@ -16,15 +16,22 @@ import {
   CreatePlaylistButton,
 } from './styles'
 import { PlusCircle } from 'phosphor-react'
+import { useRecoilValue } from 'recoil'
+import { atomToken, atomUser } from '../../store/atoms'
+import { useNavigate } from 'react-router-dom'
 
 export function PlaylistCards() {
-  const {
-    musicsOnPlaylist,
-    CallFilteredSongsOnPlaylist,
-    musicInMyPlaylist,
-    inputFilterTextContent,
-    CallSetInputFilterTextContent,
-  } = useContext(MusicContext)
+  const navigate = useNavigate()
+  const user = useRecoilValue(atomUser)
+  const token = useRecoilValue(atomToken)
+
+  if (user === undefined && token === '') {
+    navigate('/logout')
+  }
+
+  console.log(user, token)
+
+  const { musicsOnPlaylist, musicInMyPlaylist } = useContext(MusicContext)
 
   const isButtonCreatePlaylistDisable = musicInMyPlaylist.length === 0
 

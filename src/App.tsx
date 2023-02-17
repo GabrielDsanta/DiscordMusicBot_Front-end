@@ -1,4 +1,5 @@
 import { BrowserRouter } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 import { ThemeProvider } from 'styled-components'
 import { MusicContextProvider } from './contexts/MusicContext'
 import { Router } from './Router'
@@ -10,7 +11,9 @@ function App() {
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <MusicContextProvider>
-          <Router />
+          <RecoilRoot>
+            <Router />
+          </RecoilRoot>
         </MusicContextProvider>
       </BrowserRouter>
 

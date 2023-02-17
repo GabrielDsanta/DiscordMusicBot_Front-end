@@ -2,13 +2,17 @@ import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { atomToken, atomUser } from '../../store/atoms'
 import { selectorGetUser } from '../../store/selector'
-import { useSetRecoilState, useRecoilValueLoadable } from 'recoil'
+import {
+  useSetRecoilState,
+  useRecoilValueLoadable,
+  useRecoilState,
+} from 'recoil'
 export function Auth() {
   const navigate = useNavigate()
   const { token } = useParams()
 
   const setToken = useSetRecoilState(atomToken)
-  const setUser = useSetRecoilState(atomUser)
+  const [user, setUser] = useRecoilState(atomUser)
 
   const getUser = useRecoilValueLoadable(selectorGetUser)
 
@@ -32,5 +36,15 @@ export function Auth() {
     }
   }, [getUser.state, getUser.contents, navigate, setUser])
 
-  return <div>Loading...</div>
+  return (
+    <div>
+      {user && (
+        <>
+          <img src={user.img} alt="" />
+          <h1>{user.name}</h1>
+          <h3>{user.country}</h3>
+        </>
+      )}
+    </div>
+  )
 }

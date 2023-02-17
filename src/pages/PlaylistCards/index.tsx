@@ -16,15 +16,13 @@ import {
   CreatePlaylistButton,
 } from './styles'
 import { PlusCircle } from 'phosphor-react'
+import { useRecoilValue } from 'recoil'
+import { atomUser } from '../../store/atoms'
 
 export function PlaylistCards() {
-  const {
-    musicsOnPlaylist,
-    CallFilteredSongsOnPlaylist,
-    musicInMyPlaylist,
-    inputFilterTextContent,
-    CallSetInputFilterTextContent,
-  } = useContext(MusicContext)
+  const user = useRecoilValue(atomUser)
+  console.log(`Oii ${user.name}`)
+  const { musicsOnPlaylist, musicInMyPlaylist } = useContext(MusicContext)
 
   const isButtonCreatePlaylistDisable = musicInMyPlaylist.length === 0
 

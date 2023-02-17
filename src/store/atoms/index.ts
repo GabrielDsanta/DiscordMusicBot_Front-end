@@ -5,6 +5,7 @@ import { User } from '../../models/user'
 export const atomToken = atom<string>({
   key: 'atomToken',
   default: '',
+  effects: [localStorageEffect('atomToken')],
 })
 
 export const atomUser = atom<User>({

@@ -30,7 +30,17 @@ export const requester = (config: any, contentType?: string): any => {
       }
     },
   )
-
+  service.interceptors.response.use(
+    (res) => res,
+    (error) => {
+      if (
+        error.response.status === 401 &&
+        window.location.pathname === '/logout'
+      ) {
+        return (window.location.href = '/logout')
+      }
+    },
+  )
   return {
     async get<T = any>(uri: string): Promise<AxiosResponse<T>> {
       const response = await service.get<T>(uri)

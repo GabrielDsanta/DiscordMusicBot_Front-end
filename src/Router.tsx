@@ -4,6 +4,7 @@ import { DefaultLayout } from './layouts/DefaultLayout/DefaultLayout'
 import { Auth } from './pages/auth'
 
 import { Login } from './pages/Login'
+import { Logout } from './pages/Logout'
 import { PlaylistCards } from './pages/PlaylistCards'
 
 export function Router() {
@@ -17,6 +18,8 @@ export function Router() {
         </Route>
 
         <Route path="/home" element={<PlaylistCards />} />
+
+        <Route path="/logout" element={<Logout />} />
       </Route>
     </Routes>
   )

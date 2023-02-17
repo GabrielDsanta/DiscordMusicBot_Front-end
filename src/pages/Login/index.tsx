@@ -11,6 +11,10 @@ import {
   ButtonLoginSpotify,
 } from './styles'
 import photo from '../.././assets/image 1.png'
+import { useEffect } from 'react'
+import { useRecoilValue } from 'recoil'
+import { atomUser } from '../../store/atoms'
+import { useNavigate } from 'react-router-dom'
 
 const newLoginFormValidationSchema = zod.object({
   emailUser: zod
@@ -28,6 +32,9 @@ const newLoginFormValidationSchema = zod.object({
 type newLoginFormData = zod.infer<typeof newLoginFormValidationSchema>
 
 export function Login() {
+  const navigate = useNavigate()
+  const user = useRecoilValue(atomUser)
+
   const {
     register,
     handleSubmit,
@@ -45,6 +52,14 @@ export function Login() {
     console.log(data)
     reset()
   }
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/')
+    } else {
+      navigate('/home')
+    }
+  }, [user, navigate])
 
   return (
     <ContainerLogin>

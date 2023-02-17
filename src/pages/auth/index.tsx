@@ -18,18 +18,20 @@ export function Auth() {
 
   useEffect(() => {
     if (token) {
-      setToken(token.replace('token=', 'Bearer '))
+      setTimeout(() => {
+        setToken(token.replace('token=', 'Bearer '))
+      }, 300)
     }
   }, [token, setToken])
 
   useEffect(() => {
-    if (getUser.state === 'hasValue') {
+    if (getUser.state === 'hasValue' && getUser.contents !== undefined) {
       setUser({
         country: getUser?.contents?.country,
         name: getUser?.contents?.display_name,
         img: getUser?.contents?.images?.[0].url,
       })
-      console.log(getUser.contents)
+      navigate('/home')
     }
     if (getUser.state === 'hasError') {
       navigate('/')

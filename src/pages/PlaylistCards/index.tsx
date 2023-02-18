@@ -75,17 +75,15 @@ export function PlaylistCards() {
       <ContainerCards>
         {musicsOnPlaylist.length > 0 &&
           musicsOnPlaylist?.map((item, index) => {
-            if (index > 0) {
-              return (
-                <PlaylistCard
-                  id={item.id}
-                  key={item.id}
-                  name={item.name}
-                  artists={item.artists}
-                  songs={item.songs}
-                />
-              )
-            }
+            return (
+              <PlaylistCard
+                id={item.id}
+                key={item.id}
+                name={item.name}
+                artists={item.artists}
+                songs={item.songs}
+              />
+            )
           })}
         <MyPlaylist />
       </ContainerCards>

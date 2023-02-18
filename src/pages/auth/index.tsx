@@ -38,15 +38,5 @@ export function Auth() {
     }
   }, [getUser.state, getUser.contents, navigate, setUser])
 
-  return (
-    <div>
-      {user && (
-        <>
-          <img src={user.img} alt="" />
-          <h1>{user.name}</h1>
-          <h3>{user.country}</h3>
-        </>
-      )}
-    </div>
-  )
+  return <div>Loading...</div>
 }

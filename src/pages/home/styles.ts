@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 
 export const ContainerHome = styled.div`
-  width: 40rem;
-  height: 40rem;
-  margin: 5rem auto;
+  width: 50rem;
+  height: 42rem;
+  margin: 2rem auto;
+
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
@@ -15,7 +17,8 @@ export const ContainerHome = styled.div`
 export const InformationUser = styled.div`
   width: 32.375rem;
   height: 25.125rem;
-  margin-top: -5rem;
+
+  gap: 0.5rem;
 
   display: flex;
   align-items: center;
@@ -23,25 +26,22 @@ export const InformationUser = styled.div`
   flex-direction: column;
 
   img {
-    margin-bottom: 1rem;
-
+    top: 0%;
     object-fit: cover;
     border-radius: 50%;
   }
-  h1 {
-    margin-bottom: 1rem;
-  }
-  p {
-    margin-bottom: 1rem;
-  }
   span {
-    margin-bottom: 1rem;
+    gap: 0.2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `
 export const UserNumbers = styled.div`
   width: 100%;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   display: flex;
   align-items: center;
@@ -57,20 +57,48 @@ export const UserNumbers = styled.div`
   }
 `
 export const UserPlaylist = styled.div`
-  width: 38rem;
-  height: 12rem;
+  width: 100%;
+  height: 20rem;
+  margin-bottom: 0.5rem;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: ${(props) => props.theme['gray-500']};
+  background: ${(props) => props.theme['gray-800']};
 `
-
 export const Playlist = styled.div`
-  width: 15rem;
-  height: 10rem;
+  width: 21rem;
+  height: 15rem;
+  padding: 1rem;
   margin: 0 1rem 0 1rem;
 
-  background: ${(props) => props.theme['gray-100']};
+  display: flex;
+  align-items: flex-start;
+  justify-content: start;
+  flex-direction: column;
+
+  cursor: pointer;
+  border-radius: 6px;
+
+  color: ${(props) => props.theme['gray-100']};
+  background: ${(props) => props.theme['gray-700']};
+
+  div {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    img {
+      margin-bottom: 1rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  &:hover {
+    background: ${(props) => props.theme['gray-600']};
+  }
 `

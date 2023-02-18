@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyles = createGlobalStyle`
     *{
@@ -7,8 +7,8 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
     body{
-        background-color: ${props => props.theme['gray-900']};
-        color: ${props => props.theme['gray-100']};
+        background-color: ${(props) => props.theme['gray-900']};
+        color: ${(props) => props.theme['gray-100']};
         font-family: 'Roboto', sans-serif;
         font-weight: 400;
     }
